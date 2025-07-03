@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'part.dart'; // Make sure part.dart exists or update the path
+import 'part.dart'; // Your next screen
 
 class NameScreen extends StatefulWidget {
   const NameScreen({super.key});
@@ -9,11 +9,41 @@ class NameScreen extends StatefulWidget {
 }
 
 class _NameScreenState extends State<NameScreen> {
-  final List<String> names = ['Ali', 'Fatimah', 'John', 'Sarah'];
-  final List<String> matrixNumbers = ['S123456', 'S789012', 'S345678'];
+  final List<Map<String, String>> students = [
+    {'name': 'AMIRUL HAKIM B. SA\'ARI', 'matrix': '74880'},
+    {'name': 'BADRUL HISYAM BIN ISMAIL @ TALIB', 'matrix': '72433'},
+    {'name': 'CHA NON A/L IREAM', 'matrix': '73550'},
+    {'name': 'JOEY KONG YUAN JIA', 'matrix': '73533'},
+    {'name': 'LILY SYUHADA BINTI MOHD ROSLAN', 'matrix': '74520'},
+    {'name': 'MOHAMAD SYAFIQ IDHAM BIN ROSIDI', 'matrix': '73598'},
+    {'name': 'MUHAMMAD FAKHRUL IHSAN BIN MOHD TERMIZI', 'matrix': '73269'},
+    {'name': 'MUHAMMAD KHAIRIE B. MAZLI', 'matrix': '74847'},
+    {'name': 'NASHRIN NADIRA BINTI NASIR', 'matrix': '74555'},
+    {'name': 'NIK NURUL ASHIKIN BT BAHARUDIN', 'matrix': '74694'},
+    {'name': 'NUR AIN AQEELA BINTI MOHD SAIPU', 'matrix': '73352'},
+    {'name': 'NUR DAMIA IZZATI BT FAUZI', 'matrix': '74683'},
+    {'name': 'NUR FARAH NASUHA BINTI MOHD HAMRI', 'matrix': '71960'},
+    {'name': 'NUR QISTINA ELIYANA BINTI RAMLI', 'matrix': '72235'},
+    {'name': 'NUR SAQIRAH BINTI ADAM', 'matrix': '72226'},
+    {'name': 'NUR USWATUL HUSNA BT ABDULLAH', 'matrix': '74860'},
+    {'name': 'NURASSYAZWANI BINTI AZAHAR', 'matrix': '74753'},
+    {'name': 'NURUL ASMAHANI BINTI MOHD DAUD', 'matrix': '72353'},
+    {'name': 'ROSMANTASHA BINTI FAUZI', 'matrix': '74709'},
+    {'name': 'SARAH NURALYA SYAMIMI BINTI ABDUL HADI', 'matrix': '72597'},
+    {'name': 'SITI NUR AISYAH BINTI TENGAH', 'matrix': '72345'},
+  ];
 
-  String? selectedName;
+  String? selectedStudent;
   String? selectedMatrix;
+
+  String getFirstName(String fullName) => fullName.split(' ').first;
+
+  void _resetSelection() {
+    setState(() {
+      selectedStudent = null;
+      selectedMatrix = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,111 +51,122 @@ class _NameScreenState extends State<NameScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Top Row: Logos
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/unisza.png', // Make sure the path is correct
-                    height: 50,
-                  ),
-                  const SizedBox(width: 50), // Right placeholder
-                ],
-              ),
-              const SizedBox(height: 40),
+              Image.asset('assets/unisza.png', height: 50),
+              const SizedBox(height: 30),
 
-              // Center Title
               const Center(
                 child: Text(
                   'PolyLearn',
-                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.indigo,
-                    height: 1.3,
                   ),
                 ),
-              ),
-              const SizedBox(height: 40),
-
-              // Name Dropdown
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                value: selectedName,
-                items: names.map((name) {
-                  return DropdownMenuItem<String>(
-                    value: name,
-                    child: Text(name),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedName = value;
-                  });
-                },
               ),
               const SizedBox(height: 20),
 
-              // Matrix Dropdown
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Matrix',
-                  border: OutlineInputBorder(),
+              // Show list if not selected
+              if (selectedStudent == null)
+                const Text(
+                  'Please select your name:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-                value: selectedMatrix,
-                items: matrixNumbers.map((matrix) {
-                  return DropdownMenuItem<String>(
-                    value: matrix,
-                    child: Text(matrix),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedMatrix = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 30),
 
-              // Next Button
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo[700],
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 10),
+
+              if (selectedStudent == null)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: students.length,
+                    itemBuilder: (context, index) {
+                      final student = students[index];
+                      return ListTile(
+                        title: Text(
+                          student['name']!,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        subtitle: Text("Matrix: ${student['matrix']}"),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          setState(() {
+                            selectedStudent = student['name'];
+                            selectedMatrix = student['matrix'];
+                          });
+                        },
+                      );
+                    },
                   ),
                 ),
-                onPressed: () {
-                  if (selectedName != null && selectedMatrix != null) {
+
+              if (selectedStudent != null)
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '🎉 Welcome, ${getFirstName(selectedStudent!)}!',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'We’re glad you’re here!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+
+                      // Back button
+                      TextButton.icon(
+                        onPressed: _resetSelection,
+                        icon: const Icon(Icons.arrow_back, color: Colors.indigo),
+                        label: const Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.indigo,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              if (selectedStudent != null)
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const PartScreen()),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select your name and matrix number.'),
+                        builder: (context) => const PartScreen(),
                       ),
                     );
-                  }
-                },
-                child: const Text(
-                  'Next',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  },
+                  child: const Text(
+                    'Continue',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
