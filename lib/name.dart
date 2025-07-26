@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'part.dart'; // Your next screen
+import 'part.dart';
 
 class NameScreen extends StatefulWidget {
   const NameScreen({super.key});
@@ -36,8 +36,6 @@ class _NameScreenState extends State<NameScreen> {
   String? selectedStudent;
   String? selectedMatrix;
 
-  String getFirstName(String fullName) => fullName.split(' ').first;
-
   void _resetSelection() {
     setState(() {
       selectedStudent = null;
@@ -45,36 +43,39 @@ class _NameScreenState extends State<NameScreen> {
     });
   }
 
+  String getSecondName(String fullName) {
+    final parts = fullName.trim().split(' ');
+    if (parts.length >= 2) {
+      return parts[1].toUpperCase();
+    } else {
+      return parts.first.toUpperCase();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFF1D6),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset('assets/unisza.png', height: 50),
               const SizedBox(height: 30),
 
-              const Center(
-                child: Text(
-                  'PolyLearn',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Show list if not selected
               if (selectedStudent == null)
-                const Text(
-                  'Please select your name:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Please select your name:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
 
               const SizedBox(height: 10),
@@ -85,19 +86,18 @@ class _NameScreenState extends State<NameScreen> {
                     itemCount: students.length,
                     itemBuilder: (context, index) {
                       final student = students[index];
-                      return ListTile(
-                        title: Text(
-                          student['name']!,
-                          style: const TextStyle(fontSize: 16),
+                      return Card(
+                        child: ListTile(
+                          title: Text(student['name']!),
+                          subtitle: Text("Matrix: ${student['matrix']}"),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            setState(() {
+                              selectedStudent = student['name'];
+                              selectedMatrix = student['matrix'];
+                            });
+                          },
                         ),
-                        subtitle: Text("Matrix: ${student['matrix']}"),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () {
-                          setState(() {
-                            selectedStudent = student['name'];
-                            selectedMatrix = student['matrix'];
-                          });
-                        },
                       );
                     },
                   ),
@@ -108,13 +108,23 @@ class _NameScreenState extends State<NameScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        '🎉 Welcome, ${getFirstName(selectedStudent!)}!',
+                      RichText(
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.indigo,
+                        text: TextSpan(
+                          style: const TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.bold),
+                          children: [
+                            const TextSpan(
+                              text: '🎉 Welcome, ',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                            TextSpan(
+                              text: '${getSecondName(selectedStudent!)}!',
+                              style: const TextStyle(
+                                color: Color(0xFFEF6C00), // Orange
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -127,44 +137,63 @@ class _NameScreenState extends State<NameScreen> {
                       ),
                       const SizedBox(height: 30),
 
-                      // Back button
-                      TextButton.icon(
-                        onPressed: _resetSelection,
-                        icon: const Icon(Icons.arrow_back, color: Colors.indigo),
-                        label: const Text(
-                          'Back',
-                          style: TextStyle(
-                            color: Colors.indigo,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 130,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF26A69A), // Teal
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const PartScreen()),
+                                );
+                              },
+                              child: const Text(
+                                'ENTER',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 130,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: _resetSelection,
+                              child: const Text(
+                                'BACK',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                ),
-
-              if (selectedStudent != null)
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PartScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
             ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'name.dart'; // Make sure this file exists in the same folder or update the path
+import 'name.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -7,63 +7,73 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFB3C6E7), // Soft, friendly blue
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // App title
-              Text(
-                'Extrusion Mastery',
-                style: TextStyle(
-                  color: Colors.indigo[700],
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5,
-                ),
+      backgroundColor: const Color(0xFFFFF1D6),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Top logos
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset('assets/FRIT.png', height: 80),
+                  Image.asset('assets/unisza.png', height: 50),
+                  Image.asset('assets/POLY.png', height: 45),
+                ],
               ),
+            ),
 
-              const SizedBox(height: 16),
+            const Spacer(),
 
-              // Subtitle
-              Text(
-                'Test your knowledge of the extrusion machine process\nin a fun and interactive way!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.indigo[900],
-                  fontSize: 18,
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Get Started Button
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo[600],
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+            // Centered sentence and button together
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Test your knowledge of the \nextrusion machine process\nin a fun and interactive way!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
                   ),
-                  elevation: 3,
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NameScreen()),
-                  );
-                },
-                child: const Text(
-                  'Get Started',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 180,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 230, 128, 12),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 4,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NameScreen()),
+                      );
+                    },
+                    child: const Text(
+                      'START',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+
+            const Spacer(),
+          ],
         ),
       ),
     );

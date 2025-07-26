@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'video.dart'; // Updated import to video.dart
 
 class FunctionScreen extends StatelessWidget {
   const FunctionScreen({super.key});
@@ -157,36 +156,6 @@ class FunctionScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-
-          // ✅ Next Button to navigate to video.dart
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const VideoScreen()),
-                  );
-                },
-                child: const Text(
-                  'Next',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
               ),
             ),
           ),
