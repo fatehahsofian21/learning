@@ -92,10 +92,30 @@ class _NameScreenState extends State<NameScreen> {
                         itemBuilder: (context, index) {
                           final student = students[index];
                           return Card(
+                            color: const Color.fromARGB(
+                                255, 236, 212, 74), // yellow box for each name
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            elevation: 2,
                             child: ListTile(
-                              title: Text(student['name']!),
-                              subtitle: Text("Matrix: ${student['matrix']}"),
-                              trailing: const Icon(Icons.chevron_right),
+                              title: Text(
+                                student['name']!,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(
+                                      255, 108, 69, 6), // brown font
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "Matrix: ${student['matrix']}",
+                                style: const TextStyle(
+                                  color: Color.fromARGB(
+                                      255, 108, 69, 6), // brown font
+                                ),
+                              ),
+                              trailing: const Icon(Icons.chevron_right,
+                                  color: Color.fromARGB(255, 108, 69, 6)),
                               onTap: () {
                                 setState(() {
                                   selectedStudent = student['name'];
@@ -109,19 +129,7 @@ class _NameScreenState extends State<NameScreen> {
                     ),
                   if (selectedStudent != null)
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(
-                              255, 236, 212, 74), // yellow box
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 8,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 32, horizontal: 18),
                         child: Column(
@@ -133,19 +141,17 @@ class _NameScreenState extends State<NameScreen> {
                                 style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(
-                                      255, 108, 69, 6), // brown font
+                                  color: Colors.black, // font to black
                                 ),
                                 children: [
                                   const TextSpan(
                                     text: '🎉 Welcome, ',
-                                    style: TextStyle(
-                                        color: Color.fromARGB(255, 108, 69, 6)),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                   TextSpan(
                                     text: '${getSecondName(selectedStudent!)}!',
                                     style: const TextStyle(
-                                      color: Color.fromARGB(255, 108, 69, 6),
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],
@@ -156,7 +162,7 @@ class _NameScreenState extends State<NameScreen> {
                               'We’re glad you’re here!',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color.fromARGB(255, 108, 69, 6),
+                                color: Colors.black, // font to black
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
