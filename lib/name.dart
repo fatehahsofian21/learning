@@ -55,149 +55,178 @@ class _NameScreenState extends State<NameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF1D6),
+      // Change background to use wall.png as wallpaper
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset('assets/unisza.png', height: 50),
-              const SizedBox(height: 30),
-
-              if (selectedStudent == null)
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Please select your name:',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-
-              const SizedBox(height: 10),
-
-              if (selectedStudent == null)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: students.length,
-                    itemBuilder: (context, index) {
-                      final student = students[index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(student['name']!),
-                          subtitle: Text("Matrix: ${student['matrix']}"),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            setState(() {
-                              selectedStudent = student['name'];
-                              selectedMatrix = student['matrix'];
-                            });
-                          },
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/wall.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('assets/unisza.png', height: 50),
+                  const SizedBox(height: 30),
+                  if (selectedStudent == null)
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Please select your name:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
                         ),
-                      );
-                    },
-                  ),
-                ),
-
-              if (selectedStudent != null)
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: const TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                          children: [
-                            const TextSpan(
-                              text: '🎉 Welcome, ',
-                              style: TextStyle(color: Colors.black87),
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  if (selectedStudent == null)
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: students.length,
+                        itemBuilder: (context, index) {
+                          final student = students[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(student['name']!),
+                              subtitle: Text("Matrix: ${student['matrix']}"),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () {
+                                setState(() {
+                                  selectedStudent = student['name'];
+                                  selectedMatrix = student['matrix'];
+                                });
+                              },
                             ),
-                            TextSpan(
-                              text: '${getSecondName(selectedStudent!)}!',
-                              style: const TextStyle(
-                                color: Color(0xFFEF6C00), // Orange
+                          );
+                        },
+                      ),
+                    ),
+                  if (selectedStudent != null)
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(
+                              255, 236, 212, 74), // yellow box
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 32, horizontal: 18),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(
+                                      255, 108, 69, 6), // brown font
+                                ),
+                                children: [
+                                  const TextSpan(
+                                    text: '🎉 Welcome, ',
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 108, 69, 6)),
+                                  ),
+                                  TextSpan(
+                                    text: '${getSecondName(selectedStudent!)}!',
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 108, 69, 6),
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'We’re glad you’re here!',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(255, 108, 69, 6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 130,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          const Color(0xFF26A69A), // Teal
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PartScreen()),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'ENTER',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                SizedBox(
+                                  width: 130,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.redAccent,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: _resetSelection,
+                                    child: const Text(
+                                      'BACK',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'We’re glad you’re here!',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 130,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF26A69A), // Teal
-                                foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const PartScreen()),
-                                );
-                              },
-                              child: const Text(
-                                'ENTER',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          SizedBox(
-                            width: 130,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.redAccent,
-                                foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              onPressed: _resetSelection,
-                              child: const Text(
-                                'BACK',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

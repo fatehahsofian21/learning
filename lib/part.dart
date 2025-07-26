@@ -9,56 +9,68 @@ class PartScreen extends StatefulWidget {
 }
 
 class _PartScreenState extends State<PartScreen> {
-  String selectedPart = "Hopper";
-  String selectedImage = "assets/hopper.png";
+  String selectedPart = "Feeder";
+  String selectedImage = "assets/feeder.png";
   String selectedDesc =
-      "The hopper is where the process starts. It holds plastic pellets and drops them into the machine. From there, the pellets move into the barrel to be melted and shaped.";
+      "The feeder supplies plastic pellets into the hopper, starting the extrusion process.";
 
-  // Data for each part
+  // Data for each part (now 8 dots, adjust positions as needed)
   final List<Map<String, dynamic>> parts = [
     {
-      "name": "Hopper",
+      "name": "Feeder",
       "desc":
-          "The hopper is where the process starts. It holds plastic pellets and drops them into the machine. From there, the pellets move into the barrel to be melted and shaped.",
-      "img": "assets/hopper.png",
-      "dot": Offset(110, 20),
-      "color": Colors.red
-    },
-    {
-      "name": "Vacuum",
-      "desc": "The vacuum removes air from the barrel.",
-      "img": "assets/vacuum.png",
-      "dot": Offset(220, 50),
+          "The feeder supplies plastic pellets into the hopper, starting the extrusion process.",
+      "function": "Controls the flow of raw material into the machine.",
+      "img": "assets/feeder.png",
+      "dot": Offset(170, 30),
       "color": Colors.orange
     },
     {
-      "name": "Barrel Section",
-      "desc": "The barrel section heats and melts the pellets.",
-      "img": "assets/bs.png",
-      "dot": Offset(170, 80),
+      "name": "Motor",
+      "desc": "The motor drives the screw.",
+      "function": "Provides the mechanical force needed for extrusion.",
+      "img": "assets/motor.png",
+      "dot": Offset(290, 100),
       "color": Colors.purple
     },
     {
       "name": "Gear Box",
       "desc": "The gear box transmits power to the screw.",
+      "function":
+          "Ensures efficient power delivery and speed control for extrusion.",
       "img": "assets/gb.png",
-      "dot": Offset(60, 120),
+      "dot": Offset(200, 100),
       "color": Colors.lightGreen
     },
     {
-      "name": "Screen Changer",
-      "desc": "The screen changer filters out contaminants.",
-      "img": "assets/sc.png",
-      "dot": Offset(250, 120),
+      "name": "Vacuum",
+      "desc": "The vacuum removes air from the barrel.",
+      "function": "Prevents bubbles and ensures a smooth extrusion process.",
+      "img": "assets/vacuum.png",
+      "dot": Offset(40, 80),
       "color": Colors.green[900]
     },
     {
-      "name": "Motor",
-      "desc": "The motor drives the screw.",
-      "img": "assets/motor.png",
-      "dot": Offset(320, 140),
+      "name": "Barrel & Screw",
+      "desc":
+          "The barrel and screw work together to heat, melt, and mix the plastic pellets before extrusion.",
+      "function":
+          "Provides uniform melting and mixing for high-quality output.",
+      "img": "assets/bs.png",
+      "dot": Offset(60, 110),
       "color": Colors.blue
     },
+    {
+      "name": "Screen Changer",
+      "desc":
+          "The screen changer filters out contaminants from the melted plastic before it is shaped.",
+      "function":
+          "Maintains product quality by removing debris and impurities during extrusion.",
+      "img": "assets/sc.png",
+      "dot": Offset(8, 85),
+      "color": Colors.red
+    },
+    // Add two more parts if needed for 8 dots
   ];
 
   void selectPart(int idx) {
@@ -92,7 +104,7 @@ class _PartScreenState extends State<PartScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset('assets/FRIT.png', height: 35),
+                      Image.asset('assets/FRIT.png', height: 45),
                       Image.asset('assets/unisza.png', height: 35),
                       Image.asset('assets/POLY.png', height: 35),
                     ],
@@ -111,7 +123,8 @@ class _PartScreenState extends State<PartScreen> {
                           // --- Box 1: Mesin image, dots, and instruction text ---
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.95),
+                              color: const Color(0xFFFFF9C4).withOpacity(
+                                  0.80), // soft yellow, less transparent
                               borderRadius: BorderRadius.circular(18),
                               boxShadow: [
                                 BoxShadow(
@@ -161,7 +174,8 @@ class _PartScreenState extends State<PartScreen> {
                           // --- Box 2: Selected part info and image ---
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.95),
+                              color: const Color(0xFFFBE9E7).withOpacity(
+                                  0.80), // nude/peach, less transparent
                               borderRadius: BorderRadius.circular(18),
                               boxShadow: [
                                 BoxShadow(
@@ -218,9 +232,10 @@ class _PartScreenState extends State<PartScreen> {
                                         ],
                                       ),
                                     ),
-                                    // Right: Description box
+                                    // Right: Description box (make longer)
                                     Expanded(
-                                      flex: 3,
+                                      flex:
+                                          4, // <-- Increase flex to make box longer
                                       child: Container(
                                         margin: const EdgeInsets.only(left: 12),
                                         padding: const EdgeInsets.all(8),
@@ -230,13 +245,12 @@ class _PartScreenState extends State<PartScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              // Custom label for each part
                                               selectedPart == "Screen Changer"
                                                   ? "SCREEN CHANGER"
                                                   : selectedPart == "Vacuum"
                                                       ? "VACUUM SYSTEM"
                                                       : selectedPart ==
-                                                              "Barrel Section"
+                                                              "Barrel & Screw"
                                                           ? "BARREL & SCREW"
                                                           : selectedPart ==
                                                                   "Feeder"
@@ -254,22 +268,21 @@ class _PartScreenState extends State<PartScreen> {
                                               ),
                                             ),
                                             Text(
-                                              // Custom description for each part
                                               selectedPart == "Screen Changer"
-                                                  ? "The screen changer filters out contaminants from the melted plastic before it is shaped. This ensures the final product is clean and free from unwanted particles."
+                                                  ? "The screen changer filters out contaminants from the melted plastic before it is shaped. This ensures the final product is clean and free from unwanted particles.\n\nFunction: Maintains product quality by removing debris and impurities during extrusion."
                                                   : selectedPart == "Vacuum"
-                                                      ? "The vacuum system removes air from the barrel, preventing bubbles and ensuring a smooth extrusion process."
+                                                      ? "The vacuum system removes air from the barrel, preventing bubbles and ensuring a smooth extrusion process.\n\nFunction: Improves the consistency and strength of the extruded product."
                                                       : selectedPart ==
-                                                              "Barrel Section"
-                                                          ? "The barrel and screw work together to heat, melt, and mix the plastic pellets before extrusion."
+                                                              "Barrel & Screw"
+                                                          ? "The barrel and screw work together to heat, melt, and mix the plastic pellets before extrusion.\n\nFunction: Provides uniform melting and mixing for high-quality output."
                                                           : selectedPart ==
                                                                   "Feeder"
-                                                              ? "The feeder supplies plastic pellets into the hopper, starting the extrusion process."
+                                                              ? "The feeder supplies plastic pellets into the hopper, starting the extrusion process.\n\nFunction: Controls the flow of raw material into the machine."
                                                               : selectedPart ==
                                                                           "Gear Box" ||
                                                                       selectedPart ==
                                                                           "Motor"
-                                                                  ? "The gearbox transmits power to the screw, while the motor drives the entire extrusion process."
+                                                                  ? "The gearbox transmits power to the screw, while the motor drives the entire extrusion process.\n\nFunction: Ensures efficient power delivery and speed control for extrusion."
                                                                   : selectedDesc,
                                               style: const TextStyle(
                                                 color: Colors.black87,
@@ -296,7 +309,7 @@ class _PartScreenState extends State<PartScreen> {
                   child: Text(
                     "www.frit.unisza.edu.my",
                     style: TextStyle(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 21, 13, 1),
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       letterSpacing: 1.1,
@@ -341,10 +354,11 @@ class _PartScreenState extends State<PartScreen> {
     );
   }
 
+  // Make dots smaller
   static Widget buildDot(Color? color) {
     return Container(
-      width: 18,
-      height: 18,
+      width: 12, // smaller size
+      height: 12,
       decoration: BoxDecoration(
         color: color ?? Colors.grey,
         shape: BoxShape.circle,
