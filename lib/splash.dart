@@ -10,39 +10,39 @@ class SplashScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/wall.jpg',
-                fit: BoxFit.cover,
+            // Fullscreen background image using BoxDecoration
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/wall1.jpg'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
+
+            // Content layer
             Column(
               children: [
-                // Top logos
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset('assets/FRIT.png', height: 80),
-                      Image.asset('assets/unisza.png', height: 50),
-                      Image.asset('assets/POLY.png', height: 45),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 40), // top spacing
+
                 const Spacer(),
 
-                // Centered sentence and button together
+                // Center content
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Test your knowledge of the \nextrusion machine process\nin a fun and interactive way!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        'Test your knowledge of the \nextrusion machine process\nin a fun and interactive way!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -51,7 +51,7 @@ class SplashScreen extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 236, 212, 74),
-                          foregroundColor: const Color.fromARGB(255, 108, 69, 6),
+                          foregroundColor: Color.fromARGB(255, 108, 69, 6),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 16),
                           shape: RoundedRectangleBorder(

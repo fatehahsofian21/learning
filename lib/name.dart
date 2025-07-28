@@ -55,14 +55,14 @@ class _NameScreenState extends State<NameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Change background to use wall.png as wallpaper
       body: SafeArea(
         child: Stack(
           children: [
+            // Background image using wall1.jpg
             Positioned.fill(
               child: Image.asset(
-                'assets/wall.jpg',
-                fit: BoxFit.cover,
+                'assets/wall1.jpg',
+                fit: BoxFit.fill,
               ),
             ),
             Padding(
@@ -70,8 +70,7 @@ class _NameScreenState extends State<NameScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/unisza.png', height: 50),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 70), // top spacing
                   if (selectedStudent == null)
                     const Align(
                       alignment: Alignment.centerLeft,
@@ -86,14 +85,14 @@ class _NameScreenState extends State<NameScreen> {
                     ),
                   const SizedBox(height: 10),
                   if (selectedStudent == null)
-                    Expanded(
+                    SizedBox(
+                      height: 480, // Display only 6 cards at a time
                       child: ListView.builder(
                         itemCount: students.length,
                         itemBuilder: (context, index) {
                           final student = students[index];
                           return Card(
-                            color: const Color.fromARGB(
-                                255, 236, 212, 74), // yellow box for each name
+                            color: const Color.fromARGB(255, 247, 247, 247),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -102,16 +101,14 @@ class _NameScreenState extends State<NameScreen> {
                               title: Text(
                                 student['name']!,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(
-                                      255, 108, 69, 6), // brown font
+                                  color: Color.fromARGB(255, 108, 69, 6),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               subtitle: Text(
                                 "Matrix: ${student['matrix']}",
                                 style: const TextStyle(
-                                  color: Color.fromARGB(
-                                      255, 108, 69, 6), // brown font
+                                  color: Color.fromARGB(255, 108, 69, 6),
                                 ),
                               ),
                               trailing: const Icon(Icons.chevron_right,
@@ -141,18 +138,12 @@ class _NameScreenState extends State<NameScreen> {
                                 style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black, // font to black
+                                  color: Colors.black,
                                 ),
                                 children: [
-                                  const TextSpan(
-                                    text: '🎉 Welcome, ',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                  const TextSpan(text: '🎉 Welcome, '),
                                   TextSpan(
                                     text: '${getSecondName(selectedStudent!)}!',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
                                   ),
                                 ],
                               ),
@@ -162,7 +153,7 @@ class _NameScreenState extends State<NameScreen> {
                               'We’re glad you’re here!',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.black, // font to black
+                                color: Colors.black,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -174,8 +165,7 @@ class _NameScreenState extends State<NameScreen> {
                                   width: 130,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          const Color(0xFF26A69A), // Teal
+                                      backgroundColor: Color(0xFF26A69A),
                                       foregroundColor: Colors.white,
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 14),
@@ -187,8 +177,9 @@ class _NameScreenState extends State<NameScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PartScreen()),
+                                          builder: (context) =>
+                                              const PartScreen(),
+                                        ),
                                       );
                                     },
                                     child: const Text(
