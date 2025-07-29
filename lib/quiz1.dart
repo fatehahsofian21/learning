@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Quiz1Page extends StatefulWidget {
   const Quiz1Page({super.key});
@@ -9,6 +10,9 @@ class Quiz1Page extends StatefulWidget {
 }
 
 class _Quiz1PageState extends State<Quiz1Page> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _celebrationPlayer = AudioPlayer();
+
   final List<Map<String, dynamic>> questions = [
     {
       "question": "What is the primary purpose of the extrusion process?",
@@ -37,109 +41,134 @@ class _Quiz1PageState extends State<Quiz1Page> {
     },
     {
       "question": "What is the function of the die in extrusion molding?",
-      "options": ["Melts the polymer", "Cuts the product", "Gives final shape", "Mixes additives"],
+      "options": [
+        "Melts the polymer",
+        "Cuts the product",
+        "Gives the final shape to the polymer",
+        "Mixes the additives"
+      ],
       "answerIndex": 2
     },
     {
-      "question": "Which material is commonly used for pipes and tubes?",
+      "question": "In plastic extrusion, which material is commonly used for pipes and tubes?",
       "options": ["Polystyrene", "Nylon", "PVC", "Teflon"],
       "answerIndex": 2
     },
     {
-      "question": "Which zone is responsible for melting the plastic?",
+      "question": "Which zone of the screw is responsible for melting the plastic?",
       "options": ["Feed zone", "Metering zone", "Compression zone", "Exit zone"],
       "answerIndex": 2
     },
     {
       "question": "What is the typical shape of an extruded product?",
-      "options": ["Irregular", "3D", "Continuous profile", "Thin sheet"],
+      "options": ["Irregular", "Complex 3D", "Continuous profile", "Thin sheet"],
       "answerIndex": 2
     },
     {
       "question": "What causes surging during extrusion?",
-      "options": ["Die overheating", "Overfeeding", "Uneven rotation", "Inconsistent feed/temp"],
+      "options": [
+        "Die overheating",
+        "Hopper overfeeding",
+        "Uneven screw rotation",
+        "Inconsistent feed rate or temperature"
+      ],
       "answerIndex": 3
     },
     {
-      "question": "Which is NOT a typical extruded product?",
+      "question": "Which of the following is NOT a typical extruded product?",
       "options": ["Film", "Wire coating", "Bottle", "Pipe"],
       "answerIndex": 2
     },
     {
-      "question": "Which screw offers better mixing?",
+      "question": "Which type of screw offers better mixing in extrusion?",
       "options": ["Single flight", "Twin screw", "Solid core", "Hollow screw"],
       "answerIndex": 1
     },
     {
-      "question": "Function of heater bands?",
-      "options": ["Cool material", "Lubricate die", "Heat barrel", "Speed screw"],
+      "question": "What is the function of the heater bands in extrusion machines?",
+      "options": [
+        "Cool the material",
+        "Lubricate the die",
+        "Heat the barrel zones",
+        "Speed up the screw"
+      ],
       "answerIndex": 2
     },
     {
-      "question": "Melt Flow Index measures?",
-      "options": ["Screw speed", "Polymer color", "Flowability", "Cooling rate"],
+      "question": "What is the melt flow index (MFI) a measure of?",
+      "options": [
+        "Screw speed",
+        "Polymer color",
+        "Flowability of melted polymer",
+        "Cooling rate"
+      ],
       "answerIndex": 2
     },
     {
-      "question": "Cooling method for extruded profiles?",
+      "question": "Which cooling method is commonly used for extruded plastic profiles?",
       "options": ["Radiation", "Air blast", "Water bath", "Vacuum pump"],
       "answerIndex": 2
     },
     {
-      "question": "If the die is partially blocked?",
+      "question": "What happens if the die is partially blocked?",
       "options": [
-        "Stronger product",
-        "Uniform thickness",
-        "Uneven shape",
-        "Faster rotation"
+        "Product becomes stronger",
+        "Product thickness becomes uniform",
+        "Product develops uneven shape",
+        "The screw rotates faster"
       ],
       "answerIndex": 2
     },
     {
-      "question": "What does 'draw down' mean?",
+      "question": "What does the term 'draw down' refer to in extrusion?",
       "options": [
-        "Heating polymer",
-        "Stretching extrudate",
-        "Cooling product",
-        "Cleaning die"
+        "Heating the polymer",
+        "Stretching the extrudate",
+        "Cooling the product",
+        "Cleaning the die"
       ],
       "answerIndex": 1
     },
     {
-      "question": "A common defect in extrusion?",
+      "question": "What is a common defect in extrusion molding?",
       "options": ["Flash", "Sink mark", "Die lines", "Knit lines"],
       "answerIndex": 2
     },
     {
-      "question": "Material used in fiber extrusion?",
+      "question": "Which material is frequently used in fiber extrusion?",
       "options": ["Polycarbonate", "Polyethylene", "Nylon", "PVC"],
       "answerIndex": 2
     },
     {
-      "question": "Why is back pressure needed?",
+      "question": "Why is back pressure needed in an extruder?",
       "options": [
-        "Lubricate barrel",
-        "Fast exit",
-        "Improve mixing/melting",
-        "Reduce temperature"
+        "To lubricate the barrel",
+        "To ensure material exits fast",
+        "To improve mixing and melting",
+        "To reduce temperature"
       ],
       "answerIndex": 2
     },
     {
-      "question": "'Screw L/D ratio' means?",
-      "options": ["Load/diameter", "Length/diameter", "Level/depth", "Light/dark"],
+      "question": "What does 'screw L/D ratio' refer to?",
+      "options": [
+        "Load to diameter",
+        "Length to diameter",
+        "Level to depth",
+        "Light to dark"
+      ],
       "answerIndex": 1
     },
     {
-      "question": "Larger L/D ratio results in?",
+      "question": "A larger L/D ratio in an extruder results in:",
       "options": [
         "Lower output",
         "Faster cooling",
-        "Better mixing",
+        "Better mixing and melting",
         "Slower processing"
       ],
       "answerIndex": 2
-    }
+    },
   ];
 
   int currentQuestion = 0;
@@ -153,6 +182,16 @@ class _Quiz1PageState extends State<Quiz1Page> {
   void initState() {
     super.initState();
     startTimer();
+    playBackgroundMusic();
+  }
+
+  void playBackgroundMusic() async {
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    await _audioPlayer.play(AssetSource('sounds/audio.mp3'), volume: 0.4);
+  }
+
+  void playCelebrationSound() async {
+    await _celebrationPlayer.play(AssetSource('sounds/yeay.mp3'));
   }
 
   void startTimer() {
@@ -160,7 +199,12 @@ class _Quiz1PageState extends State<Quiz1Page> {
       if (timeLeft > 0) {
         setState(() => timeLeft--);
       } else {
-        nextQuestion();
+        if (!isAnswered) {
+          setState(() {
+            isAnswered = true;
+            selectedIndex = -1;
+          });
+        }
       }
     });
   }
@@ -187,6 +231,8 @@ class _Quiz1PageState extends State<Quiz1Page> {
       });
       startTimer();
     } else {
+      _audioPlayer.stop();
+      playCelebrationSound();
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -213,18 +259,9 @@ class _Quiz1PageState extends State<Quiz1Page> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 12),
-              Text(
-                'You scored',
-                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-              ),
-              Text(
-                '$score / ${questions.length}',
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-              ),
+              Text('You scored', style: TextStyle(fontSize: 16, color: Colors.grey[800])),
+              Text('$score / ${questions.length}',
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.green)),
               const SizedBox(height: 12),
               const Text(
                 'Great effort! You’ve completed the quiz successfully.',
@@ -236,8 +273,8 @@ class _Quiz1PageState extends State<Quiz1Page> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close dialog
-                Navigator.pop(context); // Go back to previous screen
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Text('Close'),
             ),
@@ -247,9 +284,32 @@ class _Quiz1PageState extends State<Quiz1Page> {
     }
   }
 
+  void confirmExit() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Exit Quiz"),
+        content: const Text("Are you sure you want to exit the quiz?"),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          TextButton(
+            onPressed: () {
+              _audioPlayer.stop();
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text("Yes, Exit"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     timer?.cancel();
+    _audioPlayer.dispose();
+    _celebrationPlayer.dispose();
     super.dispose();
   }
 
@@ -265,108 +325,117 @@ class _Quiz1PageState extends State<Quiz1Page> {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              children: [
-                Image.asset('assets/q.png', height: 60),
-                const SizedBox(height: 12),
-                Text(
-                  "QUESTION ${currentQuestion + 1}/${questions.length}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
                   children: [
-                    const Icon(Icons.timer, color: Colors.black87),
-                    const SizedBox(width: 6),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: const Icon(Icons.close, color: Colors.red),
+                        onPressed: confirmExit,
+                      ),
+                    ),
+                    Image.asset('assets/q.png', height: 60),
+                    const SizedBox(height: 12),
                     Text(
-                      "$timeLeft s",
+                      "QUESTION ${currentQuestion + 1}/${questions.length}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.red,
                         fontSize: 16,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  q['question'],
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...List.generate(q['options'].length, (index) {
-                  final isSelected = selectedIndex == index;
-                  final isCorrect = index == q['answerIndex'];
-                  Color bgColor = Colors.white;
-
-                  if (isAnswered) {
-                    if (isSelected && isCorrect) bgColor = Colors.green;
-                    else if (isSelected && !isCorrect) bgColor = Colors.red;
-                    else if (!isSelected && isCorrect) bgColor = Colors.green;
-                  }
-
-                  return GestureDetector(
-                    onTap: () => checkAnswer(index),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: bgColor,
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Text(
-                              String.fromCharCode(65 + index),
-                              style: const TextStyle(color: Colors.black),
-                            ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.timer, color: Colors.black87),
+                        const SizedBox(width: 6),
+                        Text(
+                          "$timeLeft s",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              q['options'][index],
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                }),
-                const Spacer(),
-                if (isAnswered)
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: ElevatedButton.icon(
-                      onPressed: nextQuestion,
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Next'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    const SizedBox(height: 10),
+                    Text(
+                      q['question'],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    ...List.generate(q['options'].length, (index) {
+                      final isSelected = selectedIndex == index;
+                      final isCorrect = index == q['answerIndex'];
+                      Color bgColor = Colors.white;
+
+                      if (isAnswered) {
+                        if (selectedIndex == -1 && isCorrect) {
+                          bgColor = Colors.red; // show only correct answer in red if timeout
+                        } else if (isSelected && isCorrect) {
+                          bgColor = Colors.green;
+                        } else if (isSelected && !isCorrect) {
+                          bgColor = Colors.red;
+                        } else if (!isSelected && isCorrect) {
+                          bgColor = Colors.green;
+                        }
+                      }
+
+                      return GestureDetector(
+                        onTap: () => checkAnswer(index),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: bgColor,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Text(String.fromCharCode(65 + index),
+                                    style: const TextStyle(color: Colors.black)),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(q['options'][index],
+                                    style: const TextStyle(fontSize: 16)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                    const Spacer(),
+                    if (isAnswered)
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton.icon(
+                          onPressed: nextQuestion,
+                          icon: const Icon(Icons.arrow_forward),
+                          label: const Text('Next'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-              ],
-            ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

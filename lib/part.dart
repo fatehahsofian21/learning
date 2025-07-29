@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'quizScreen.dart';
 
 class PartScreen extends StatefulWidget {
@@ -9,6 +10,8 @@ class PartScreen extends StatefulWidget {
 }
 
 class _PartScreenState extends State<PartScreen> {
+  final FlutterTts flutterTts = FlutterTts();
+
   String selectedPart = "Feeder";
   String selectedImage = "assets/feeder.png";
   String selectedDesc =
@@ -55,7 +58,8 @@ class _PartScreenState extends State<PartScreen> {
       "name": "Barrel & Screw",
       "desc":
           "The barrel and screw work together to heat, melt, and mix the plastic pellets before extrusion.",
-      "function": "Provides uniform melting and mixing for high-quality output.",
+      "function":
+          "Provides uniform melting and mixing for high-quality output.",
       "img": "assets/bs.png",
       "dot": Offset(60, 110),
       "color": Colors.blue
@@ -72,6 +76,22 @@ class _PartScreenState extends State<PartScreen> {
     },
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    flutterTts.setSpeechRate(0.5); // normal speed
+    flutterTts.setPitch(1.0);
+  }
+
+  Future<void> speakPart(String name, String desc, String function) async {
+    await flutterTts.stop();
+    await flutterTts.speak(name);
+    await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.speak(desc);
+    await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.speak("Function: $function");
+  }
+
   void selectPart(int idx) {
     setState(() {
       selectedPart = parts[idx]["name"];
@@ -79,6 +99,13 @@ class _PartScreenState extends State<PartScreen> {
       selectedDesc = parts[idx]["desc"];
       selectedFunction = parts[idx]["function"];
     });
+    speakPart(selectedPart, selectedDesc, selectedFunction);
+  }
+
+  @override
+  void dispose() {
+    flutterTts.stop();
+    super.dispose();
   }
 
   @override
@@ -96,7 +123,7 @@ class _PartScreenState extends State<PartScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 70),
+                const SizedBox(height: 80),
                 Expanded(
                   child: Align(
                     alignment: Alignment.topCenter,
@@ -132,9 +159,8 @@ class _PartScreenState extends State<PartScreen> {
                                   children: [
                                     Image.asset(
                                       'assets/mesen.png',
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                              0.95,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.95,
                                       fit: BoxFit.contain,
                                     ),
                                     for (int i = 0; i < parts.length; i++)
@@ -256,8 +282,19 @@ class _PartScreenState extends State<PartScreen> {
                             alignment: Alignment.centerRight,
                             child: Padding(
                               padding: const EdgeInsets.only(right: 12),
-                              child: ElevatedButton(
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 153, 216, 81),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
                                 onPressed: () {
+                                  flutterTts
+                                      .stop(); // Stop TTS before navigating
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -266,26 +303,22 @@ class _PartScreenState extends State<PartScreen> {
                                     ),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 153, 216, 81),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 10),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 18,
                                 ),
-                                child: const Text(
-                                  'Next',
+                                label: const Text(
+                                  'NEXT',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 15, 71, 23),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10), // space from bottom
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),

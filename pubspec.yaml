@@ -14,22 +14,22 @@ dependencies:
   video_player: ^2.7.0
   url_launcher: ^6.2.5
   lottie: ^2.7.0
-
+  flutter_tts: ^4.2.3
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
-
   uses-material-design: true
 
   assets:
     - assets/unisza.png
     - assets/machine.png
     - assets/pressure.png
-    - assets/video.mp4
     - assets/FRIT.png
     - assets/POLY.png
     - assets/mesen.png
@@ -44,4 +44,10 @@ flutter:
     - assets/vacuum.png
     - assets/feeder.png
     - assets/wall1.jpg
+    - assets/sounds/audio.mp3 
+    - assets/sounds/yeay.mp3
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.jpg"
